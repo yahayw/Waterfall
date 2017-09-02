@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流布局 Waterfall-Layout</title>
+    <style>
+        .container {
+            position: relative;
+        }
+
+        .container .item {
+            margin: 4px;
+            position: absolute;            
+            width: 250px;
+            border: 1px solid #ccc;
+        }
+
+        .container .item.h1 {
+            height: 100px;
+            background-color: pink;
+        }
+
+        .container .item.h2 {
+            height: 120px;
+            background-color: #cde;
+        }
+
+        .container .item.h3 {
+            height: 130px;
+            background-color: #ffe;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item h1">item1</div>
+        <div class="item h2">item2</div>
+        <div class="item h3">item3</div>
+        <div class="item h2">item4</div>
+        <div class="item h3">item5</div>
+        <div class="item h1">item6</div>
+        <div class="item h3">item7</div>
+        <div class="item h1">item8</div>
+        <div class="item h1">item9</div>
+        <div class="item h2">item10</div>
+        <div class="item h3">item11</div>
+        <div class="item h2">item12</div>
+        <div class="item h3">item13</div>
+        <div class="item h1">item14</div>
+        <div class="item h3">item15</div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <script>
+        var $items = $(".container .item");
+        var itemWidth=$items.width();
+        var cols=parseInt($(".container").width()/itemWidth);
+        var itemArr=[];
+        for(var i=0;i<cols;i++){
+            itemArr[i]=0;
+        }
+        $items.each(function(){
+            var $this=$(this);
+            var minValue=Math.min.apply(null,itemArr);
+            var minIdx=itemArr.indexOf(minValue);
+            $this.css({
+                top: minValue,
+                left: $(this).outerWidth(true)*minIdx
+            })
+            itemArr[minIdx] +=$this.outerHeight(true);
+        })
+    </script>
+</body>
+
+</html>
